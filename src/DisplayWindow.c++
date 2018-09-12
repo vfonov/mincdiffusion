@@ -107,7 +107,7 @@ void DisplayWindow::AddObject(vtkMapper *Mapper)
 void DisplayWindow::AddObject(vtkObject *object)
 {
   vtkPolyDataMapper *mapper=vtkPolyDataMapper::New();
-  mapper->SetInput(object->GetOutput());
+  mapper->SetInputData(object->GetOutput());
   vtkActor *actor = vtkActor::New();
   actor->SetMapper(Mapper);
   m_renderer->AddActor(actor);

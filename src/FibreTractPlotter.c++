@@ -697,18 +697,18 @@ vtkActor *FibreTractPlotter::CreateActor()
   if (!_plot_as_tubes)
     {
       
-      tracts_mapper->SetInput(_tracts);
+      tracts_mapper->SetInputData(_tracts);
     }
   else
     {
       vtkTubeFilter *tube_filter=vtkTubeFilter::New();
-      tube_filter->SetInput(_tracts);
+      tube_filter->SetInputData(_tracts);
       
       tube_filter->SetNumberOfSides(3);
       tube_filter->SetRadius(_tube_radius);
       tube_filter->CappingOn();
       //tube_filter->SetVaryRadiusToVaryRadiusByScalar();      
-      tracts_mapper->SetInput(tube_filter->GetOutput());
+      tracts_mapper->SetInputData(tube_filter->GetOutput());
 
     }
 

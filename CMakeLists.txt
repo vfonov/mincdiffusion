@@ -1,4 +1,4 @@
-PROJECT (MINCDIFFUSION)
+PROJECT (MINCDIFFUSION C CXX )
 cmake_minimum_required(VERSION 2.4)
 if(COMMAND cmake_policy) #prevent warnings in cmake 2.6
   cmake_policy(SET CMP0003 NEW)
@@ -10,23 +10,27 @@ endif(COMMAND cmake_policy)
 #SET(EZMINC_BASE "ezminc" CACHE PATH "EZMINC Base dir" )
 SET(GSL_BASE    "/usr" CACHE PATH  "GSL Base dir" )
 #SET(X11_BASE /usr/X11R6 CACHE PATH  "X11 Base dir")
-find_package(LIBMINC REQUIRED)
+
+find_package( LIBMINC REQUIRED)
 FIND_PACKAGE( X11  REQUIRED )
 FIND_PACKAGE( OpenGL REQUIRED )
 
-OPTION(USE_MINC2  "Use MINC2" ON)
+#OPTION(USE_MINC2  "Use MINC2" ON)
 
-
-#VTK 
+INCLUDE_DIRECTORIES(include ${LIBMINC_INCLUDE_DIRS} ${GSL_BASE}/include/gsl ${GSL_BASE}/include ${X11_X11_INCLUDE_PATH} ${OPENGL_INCLUDE_DIR} )
+LINK_DIRECTORIES(${LIBMINC_LIBRARY_DIRS})
+#VTK
 FIND_PACKAGE(VTK)
 IF (VTK_FOUND)
   INCLUDE (${VTK_USE_FILE})
 ENDIF (VTK_FOUND)
+LINK_DIRECTORIES(${VTK_LIBRARY_DIRS})
 
-SET(CMAKE_CXX_FLAGS -Wno-deprecated)
-SET(CMAKE_C_FLAGS   -Wno-deprecated)
+#SET(CMAKE_CXX_FLAGS -Wno-deprecated)
+#SET(CMAKE_C_FLAGS   -Wno-deprecated)
 
-SUBDIRS( ezminc/minc_io )
+#SUBDIRS( ezminc/minc_io )
+#ADD_DEFINITIONS( -DMINC2 )
 
 
 SET(MINCDIFFUSION_C 
@@ -43,32 +47,17 @@ SET(MINCDIFFUSION_C
   src/InteractorStyleMovie.c++ src/InteractorStyleLevelSet.c++
   src/SphericalHarmonics.c++ src/Deconvolver.c++)
 
-  
- 
-INCLUDE_DIRECTORIES(include ${LIBMINC_INCLUDE_DIRS} ${GSL_BASE}/include/gsl ${GSL_BASE}/include ${NETCDF_BASE}/include ezminc/minc_io ${X11_X11_INCLUDE_PATH} ${OPENGL_INCLUDE_DIR} )
-
 
 LINK_DIRECTORIES(${LIBMINC_LIBRARY_DIRS} ${GSL_BASE}/lib ${EZMINC_BASE}/lib)
 
-LINK_LIBRARIES(vtkCommon vtkGraphics
-  vtkFiltering vtkImaging vtkRendering vtkWidgets vtkIO vtkHybrid 
-  minc_io
-  m  
-  gsl gslcblas 
+LINK_LIBRARIES( ${EZMINC_LIBRARIES} ${LIBMINC_LIBRARIES} z ${VTK_LIBRARIES}
+  gsl gslcblas
   glut 
   ${OPENGL_glu_LIBRARY} ${OPENGL_gl_LIBRARY} 
   pthread 
   ${X11_X11_LIB} ${X11_Xext_LIB} 
   ${X11_Xmu_LIB} ${X11_Xt_LIB} ${X11_Xi_LIB} ${X11_SM_LIB} ${X11_ICE_LIB} 
    dl)
-
-IF(USE_MINC2)
-  ADD_DEFINITIONS( -DMINC2 )
-  LINK_LIBRARIES( ${LIBMINC_LIBRARIES} z)
-ELSE(USE_MINC2)
-  LINK_LIBRARIES(volume_io minc netcdf)
-ENDIF(USE_MINC2)
-
 
 ADD_LIBRARY(mincdiffusion  ${MINCDIFFUSION_C})
 LINK_LIBRARIES(mincdiffusion) #looks like all these programs are using this library
@@ -93,11 +82,11 @@ INSTALL(TARGETS
 
 add_subdirectory (scripts)
 
-CONFIGURE_FILE(
-  "${CMAKE_CURRENT_SOURCE_DIR}/cmake_uninstall.cmake.in"
-  "${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake"
-  IMMEDIATE @ONLY)
+#CONFIGURE_FILE(
+#  "${CMAKE_CURRENT_SOURCE_DIR}/cmake_uninstall.cmake.in"
+#  "${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake"
+#  IMMEDIATE @ONLY)
 
-ADD_CUSTOM_TARGET(uninstall
-  "${CMAKE_COMMAND}" -P "${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake")
+#ADD_CUSTOM_TARGET(uninstall
+#  "${CMAKE_COMMAND}" -P "${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake")
 

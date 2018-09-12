@@ -52,7 +52,7 @@ char *CreateHistoryString(int argc, char *argv[])
   
   history = (char *) malloc(l*sizeof(char));
 
-  strstream historystream(history,l*sizeof(char));
+  std::strstream historystream(history,l*sizeof(char));
   
   historystream << "";
   

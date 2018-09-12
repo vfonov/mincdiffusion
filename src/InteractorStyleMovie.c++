@@ -41,7 +41,7 @@ InteractorStyleMovie::InteractorStyleMovie()
   m_window_to_image=vtkWindowToImageFilter::New();
   m_writer=vtkPNMWriter::New();
 
-  //m_window_to_image->SetInput(this->GetInteractor()->GetRenderWindow());
+  //m_window_to_image->SetInputData(this->GetInteractor()->GetRenderWindow());
   m_framename=(char *) malloc(200*sizeof(char));
   m_baseframename=(char *) malloc(200*sizeof(char)); // added by IL
   
@@ -245,7 +245,7 @@ void InteractorStyleMovie::SaveFrame()
   
 
   cout << "save frame " << m_framename << endl;
-  m_writer->SetInput(m_window_to_image->GetOutput());
+  m_writer->SetInputData(m_window_to_image->GetOutput());
   m_writer->SetFileName(m_framename);
   m_writer->Write();
   m_counter+=1;

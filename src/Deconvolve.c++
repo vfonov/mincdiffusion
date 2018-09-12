@@ -83,7 +83,7 @@ void Deconvolve(char *input_name, char *mask_name, char *output_name, char *resp
 	  nonzero_b_image=tmp_image;
 	}
 
-  deconvolver->SetInput(nonzero_b_image); 
+  deconvolver->SetInput(nonzero_b_image);
 		  
 
   if (use_e1)

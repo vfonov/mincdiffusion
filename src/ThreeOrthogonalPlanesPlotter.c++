@@ -46,7 +46,7 @@ ThreeOrthogonalPlanesPlotter::ThreeOrthogonalPlanesPlotter(ImageData *image_data
       _image_data_vtk->SetOrigin((double)image_data->GetXStart(),(double)image_data->GetYStart(),(double)image_data->GetZStart());
       _image_data_vtk->SetSpacing((double)image_data->GetXStep(),(double)image_data->GetYStep(),(double)image_data->GetZStep());
       _image_data_vtk->SetDimensions(image_data->GetXSize(),image_data->GetYSize(),image_data->GetZSize());
-      _image_data_vtk->SetScalarTypeToFloat();//CLAUDE this fixes seg fault!!!!!!!
+      //_image_data_vtk->SetScalarTypeToFloat();//CLAUDE this fixes seg fault!!!!!!!
     
       // should keep a pointer of this for float_array->Delete();   // CLAUDE
       vtkFloatArray *float_array=vtkFloatArray::New();
@@ -108,7 +108,7 @@ ThreeOrthogonalPlanesPlotter::ThreeOrthogonalPlanesPlotter(ImageData *image_data
   for (i=0;i<3;i++) 
     {
       _image_plane_widgets[i]=vtkImagePlaneWidget::New();
-      _image_plane_widgets[i]->SetInput(_image_data_vtk);
+      _image_plane_widgets[i]->SetInputData(_image_data_vtk);
       _image_plane_widgets[i]->DisplayTextOn();
       _image_plane_widgets[i]->RestrictPlaneToVolumeOn();
       //_image_plane_widgets[i]->UserControlledLookupTableOn();            

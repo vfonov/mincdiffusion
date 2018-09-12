@@ -238,7 +238,7 @@ vtkActor *LevelSetPlotter::CreateActor()
 
   volume->SetOrigin( xstart-2*zstep, ystart-2*ystep, zstart-2*zstep);
   
-  volume->SetScalarTypeToFloat(); //Ilana add this here too, vtk5 seems to need this
+  //volume->SetScalarTypeToFloat(); //Ilana add this here too, vtk5 seems to need this
 
   vtkFloatArray *scalars=vtkFloatArray::New();
 
@@ -306,7 +306,7 @@ vtkActor *LevelSetPlotter::CreateActor()
   
   // Run ContourFilter
   vtkContourFilter *aContour= vtkContourFilter::New();
-  aContour->SetInput(volume);
+  aContour->SetInputData(volume);
   aContour->ComputeScalarsOff();
   aContour->ComputeGradientsOff();
   aContour->ComputeNormalsOff();
@@ -316,26 +316,26 @@ vtkActor *LevelSetPlotter::CreateActor()
   //Smooth the data
   vtkSmoothPolyDataFilter *smoother;
   smoother = vtkSmoothPolyDataFilter::New();
-  smoother->SetInput(aContour->GetOutput());
+  smoother->SetInputData(aContour->GetOutput());
   smoother->SetNumberOfIterations(_smoothing_iterations);
 
  
   // Compute Normals
   vtkPolyDataNormals *normals;
   normals = vtkPolyDataNormals::New();
-  normals->SetInput(smoother->GetOutput());
+  normals->SetInputData(smoother->GetOutput());
 
    
   // Create triangle strips
   vtkStripper *stripper;
   stripper = vtkStripper::New();
-  stripper->SetInput(smoother->GetOutput());
+  stripper->SetInputData(smoother->GetOutput());
 
 
 
   //  map to graphics library
   vtkPolyDataMapper *level_set_mapper=vtkPolyDataMapper::New();
-  level_set_mapper->SetInput(stripper->GetOutput());
+  level_set_mapper->SetInputData(stripper->GetOutput());
 
 
   // actor coordinates geometry, properties, transformation

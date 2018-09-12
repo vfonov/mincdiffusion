@@ -24,6 +24,8 @@
 #include <float.h>
 #include <math.h>
 #include <string>
+#include <strstream>
+
 
 #include "otherlibs_include.h"
 
