@@ -1,5 +1,5 @@
 /************************************************************************
-
+   
    File: 3Dvis.c++
 
    Author: Jennifer Campbell
@@ -323,7 +323,7 @@ void PlotTracts(char **tract_set_filename_array, int number_of_tract_sets, Displ
       //fibre_tract_plotter_array[i]->SetColour(tract_colour[0],tract_colour[1],tract_colour[2]);
       if (plot_tubes)
 	{
-	  fibre_tract_plotter_array[i]->SetTubesOn(0.3);
+	  fibre_tract_plotter_array[i]->SetTubesOn(3.3);
 	}
   
       if (map_tract_point_scalars)
@@ -1739,10 +1739,11 @@ int main(int argc, char *argv[])
   //for file resampling:
 
 
-  sprintf(tempdirname,"/tmp/tmp%i",(int) time(NULL));
+/*  sprintf(tempdirname,"/tmp/tmp%i",(int) time(NULL));
   sprintf(command,"mkdir %s\n",tempdirname);
-  system(command);
-
+  system(command);*/
+	sprintf(tempdirname,"/tmp/mincDiffusion_XXXXXX");
+	mkdtemp(tempdirname);
 
 
   //create DisplayWindow:
@@ -2010,13 +2011,11 @@ int main(int argc, char *argv[])
   //delete (three_planes_plotter);   // CLAUDE
 
   //clean up temp directory:
-  sprintf(command,"rm -f %s/tmp*\n",tempdirname);
+  //sprintf(command,"rm -f %s/*\n",tempdirname);
   //cout << command << endl;
+  //system(command);
 
-
-  system(command);
-
-  sprintf(command,"rmdir %s\n",tempdirname);
+  sprintf(command,"rm -rf %s\n",tempdirname);
   //cout << command << endl;
 
   system(command);

@@ -19,16 +19,46 @@
 #include <gsl/gsl_sf.h>
 #include <gsl/gsl_statistics.h>
 #include <gsl/gsl_blas.h>
-
+#include <gsl/gsl_rng.h>
+#include <gsl/gsl_randist.h>
+#include <unistd.h>
 #include "misc.h"
 #include "otherlibs_include.h"
 #include "Directions.h"
 #include "ImageData.h"
 #include "S2Interpolator.h"
 
-#include <boost/random.hpp>
-
+//#include <boost/random.hpp>
 //using namespace std;
+
+
+class random_number_generator
+{
+  //helper class to initializa random number generator from GSL
+  public:
+  gsl_rng * r;
+  random_number_generator()
+  {
+    r=gsl_rng_alloc (gsl_rng_mt19937);
+    gsl_rng_set(r,(int) time (NULL));
+
+  }
+
+  ~random_number_generator()
+  {
+    gsl_rng_free(r);
+  }
+
+  double generate_normal(double sigma)
+  {
+    return gsl_ran_gaussian(r,sigma);
+  }
+};
+
+
+// global random number generator
+static random_number_generator _rng_misc;
+
 
 
 void Error(const char *msg) 
@@ -86,13 +116,14 @@ void ResampleStandardDirCos(char *in_filename,char *out_filename,char
 
   VECTOR3D dircosx, dircosy, dircosz;
 
+  sprintf(tempfilename,"%s/resample_XXXXXX.mnc", tempdirname);
+  sprintf(tempxfmname,"%s/resample_XXXXXX.xfm", tempdirname);
 
-  seed = (int) time (NULL);
-  srand48(seed);
+  close(mkstemps(tempfilename,4));
+  close(mkstemps(tempxfmname,4));
 
-  sprintf(tempfilename,"%s/tmp%f.mnc",tempdirname, (double) rand());
-  sprintf(tempxfmname,"%s/tmpxfm%f.xfm",tempdirname, (double) rand()); // IL
-
+  unlink(tempfilename);
+  unlink(tempxfmname);
 
 
   // check how the current direction cosines relate to std and resample if neg dir cosine:
@@ -154,12 +185,15 @@ void ResampleNegStep(char *in_filename,char *out_filename,char *tempdirname)
   char *tempfilename=(char *) malloc(200*sizeof(char));
   int seed;
   float xstart,ystart,zstart,zstep,ystep,xstep;
-  seed = (int) time (NULL);
-  srand48(seed); 
   
-  sprintf(tempfilename,"%s/tmp%f.mnc",tempdirname, (double) rand());
   //sprintf(tempfilename,"%s/tmp%f.mnc",tempdirname, (double) rand());
-  
+  //sprintf(tempfilename,"%s/tmp%f.mnc",tempdirname, (double) rand());
+
+  sprintf(tempfilename,"%s/resample_XXXXXX.mnc", tempdirname);
+  close(mkstemps(tempfilename,4));
+  unlink(tempfilename);
+
+
   //get info on infile:
 
   ImageData *image_data=new ImageData(in_filename);
@@ -219,11 +253,12 @@ void ResamplePosStep(char *in_filename,char *out_filename,char *tempdirname)
   char *tempfilename=(char *) malloc(200*sizeof(char));
   int seed;
   float xstart,ystart,zstart,zstep,ystep,xstep;
-  seed = (int) time (NULL);
-  srand48(seed); 
   
-  sprintf(tempfilename,"%s/tmp%f.mnc",tempdirname, (double) rand());
   //sprintf(tempfilename,"%s/tmp%f.mnc",tempdirname, (double) rand());
+  //sprintf(tempfilename,"%s/tmp%f.mnc",tempdirname, (double) rand());
+  sprintf(tempfilename,"%s/resample_XXXXXX.mnc", tempdirname);
+  close(mkstemps(tempfilename,4));
+  unlink(tempfilename);
   
   //get info on infile:
 
@@ -317,7 +352,11 @@ void Resample(std::string& in_filename,std::string& out_filename,std::string& te
   //}
   
   //this appears to be unique, but check it: (could just use a counter..) this gives the same series of numbers every time program is run, regardless of seed(=time)
-  sprintf(tempfilename,"%s/tmp%f.mnc",tempdirname.c_str(), (double) rand());
+  //sprintf(tempfilename,"%s/tmp%f.mnc",tempdirname.c_str(), (double) rand());
+  sprintf(tempfilename,"%s/resample_XXXXXX.mnc", tempdirname.c_str());
+  close(mkstemps(tempfilename,4));
+  unlink(tempfilename);
+
 
   
   
@@ -1332,7 +1371,7 @@ float Legendre0(const int & order) {
 double DeltaAngle(double sigma)
 {
   // using namespace boost::random;
-
+  /*
   boost::mt19937 rngn(42u);
   boost::normal_distribution<double> gaussian(0.0, sigma);
 
@@ -1346,7 +1385,9 @@ double DeltaAngle(double sigma)
   double rangle;
   rangle=gauss_num_gen();
 
-  return rangle;
+
+  return rangle;*/
+  return _rng_misc.generate_normal(sigma);
 }
 
 double double_abs(double a)

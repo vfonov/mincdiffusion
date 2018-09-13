@@ -704,7 +704,7 @@ vtkActor *FibreTractPlotter::CreateActor()
       vtkTubeFilter *tube_filter=vtkTubeFilter::New();
       tube_filter->SetInputData(_tracts);
       
-      tube_filter->SetNumberOfSides(3);
+      tube_filter->SetNumberOfSides(10);
       tube_filter->SetRadius(_tube_radius);
       tube_filter->CappingOn();
       //tube_filter->SetVaryRadiusToVaryRadiusByScalar();      
