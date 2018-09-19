@@ -323,7 +323,7 @@ void PlotTracts(char **tract_set_filename_array, int number_of_tract_sets, Displ
       //fibre_tract_plotter_array[i]->SetColour(tract_colour[0],tract_colour[1],tract_colour[2]);
       if (plot_tubes)
 	{
-	  fibre_tract_plotter_array[i]->SetTubesOn(3.3);
+	  fibre_tract_plotter_array[i]->SetTubesOn(0.3);
 	}
   
       if (map_tract_point_scalars)
@@ -1040,7 +1040,7 @@ void PlotVectors(char *file1, char *file2, char *file3, char *mask, char *scale_
 			      cone_source1->SetCenter(point.x-0.5*cone_source1->GetHeight()*v[0],point.y-0.5*cone_source1->GetHeight()*v[1],point.z-0.5*cone_source1->GetHeight()*v[2]);
 			      cone_source1->CappingOn();    
 			      mapper=vtkPolyDataMapper::New();
-			      mapper->SetInputData(cone_source1->GetOutput());
+			      mapper->SetInput(cone_source1->GetOutput());
 
 			      c_actor=vtkActor::New();
 
@@ -1129,7 +1129,7 @@ void PlotVectors(char *file1, char *file2, char *file3, char *mask, char *scale_
 			      cone_source1->SetCenter(point.x-0.5*cone_source1->GetHeight()*v[0],point.y-0.5*cone_source1->GetHeight()*v[1],point.z-0.5*cone_source1->GetHeight()*v[2]);
 			      //cone_source1->CappingOn();    
 			      mapper=vtkPolyDataMapper::New();
-			      mapper->SetInputData(cone_source1->GetOutput());
+			      mapper->SetInput(cone_source1->GetOutput());
 			      c_actor=vtkActor::New();
 
 			      c_actor->SetMapper(mapper);
@@ -1191,7 +1191,7 @@ void PlotVectors(char *file1, char *file2, char *file3, char *mask, char *scale_
 			     
 			      
 			      mapper=vtkPolyDataMapper::New();
-			      mapper->SetInputData(cone_source2->GetOutput());
+			      mapper->SetInput(cone_source2->GetOutput());
 			      c_actor=vtkActor::New();
 			      c_actor->SetMapper(mapper);
 			      if (!greyscale)
@@ -1240,7 +1240,7 @@ void PlotVectors(char *file1, char *file2, char *file3, char *mask, char *scale_
       polydata->GetPointData()->SetScalars(scalars);
     }
 
-  hedgehog->SetInputData(polydata);
+  hedgehog->SetInput(polydata);
   hedgehog->SetScaleFactor(1);
 	 
 
@@ -1248,7 +1248,7 @@ void PlotVectors(char *file1, char *file2, char *file3, char *mask, char *scale_
 
  
   mapper=vtkPolyDataMapper::New();
-  mapper->SetInputData(hedgehog->GetOutput());
+  mapper->SetInput(hedgehog->GetOutput());
 
   if (!greyscale)
     {

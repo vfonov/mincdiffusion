@@ -467,10 +467,10 @@ vtkActor *Directions::GetActor()
   float radius=0.02;
   sphere->SetRadius(radius);
   vtkGlyph3D *spheres=vtkGlyph3D::New();
-  spheres->SetInputData(polydata);
-  spheres->SetSourceData(sphere->GetOutput());
+  spheres->SetInput(polydata);
+  spheres->SetSource(sphere->GetOutput());
   vtkPolyDataMapper *glyphmapper=vtkPolyDataMapper::New();
-  glyphmapper->SetInputData(spheres->GetOutput());
+  glyphmapper->SetInput(spheres->GetOutput());
   vtkActor *glyphactor=vtkActor::New();
   glyphactor->SetMapper(glyphmapper);
   glyphactor->GetProperty()->SetColor(0,0,1);
@@ -503,10 +503,10 @@ vtkActor *Directions::GetActor(float red, float green, float blue)
   float radius=0.02;
   sphere->SetRadius(radius);
   vtkGlyph3D *spheres=vtkGlyph3D::New();
-  spheres->SetInputData(polydata);
-  spheres->SetSourceData(sphere->GetOutput());
+  spheres->SetInput(polydata);
+  spheres->SetSource(sphere->GetOutput());
   vtkPolyDataMapper *glyphmapper=vtkPolyDataMapper::New();
-  glyphmapper->SetInputData(spheres->GetOutput());
+  glyphmapper->SetInput(spheres->GetOutput());
   vtkActor *glyphactor=vtkActor::New();
   glyphactor->SetMapper(glyphmapper);
   glyphactor->GetProperty()->SetColor(red,green,blue);

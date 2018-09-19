@@ -108,7 +108,7 @@ ThreeOrthogonalPlanesPlotter::ThreeOrthogonalPlanesPlotter(ImageData *image_data
   for (i=0;i<3;i++) 
     {
       _image_plane_widgets[i]=vtkImagePlaneWidget::New();
-      _image_plane_widgets[i]->SetInputData(_image_data_vtk);
+      _image_plane_widgets[i]->SetInput(_image_data_vtk);
       _image_plane_widgets[i]->DisplayTextOn();
       _image_plane_widgets[i]->RestrictPlaneToVolumeOn();
       //_image_plane_widgets[i]->UserControlledLookupTableOn();            

@@ -306,7 +306,7 @@ vtkActor *LevelSetPlotter::CreateActor()
   
   // Run ContourFilter
   vtkContourFilter *aContour= vtkContourFilter::New();
-  aContour->SetInputData(volume);
+  aContour->SetInput(volume);
   aContour->ComputeScalarsOff();
   aContour->ComputeGradientsOff();
   aContour->ComputeNormalsOff();
@@ -316,26 +316,26 @@ vtkActor *LevelSetPlotter::CreateActor()
   //Smooth the data
   vtkSmoothPolyDataFilter *smoother;
   smoother = vtkSmoothPolyDataFilter::New();
-  smoother->SetInputData(aContour->GetOutput());
+  smoother->SetInput(aContour->GetOutput());
   smoother->SetNumberOfIterations(_smoothing_iterations);
 
  
   // Compute Normals
   vtkPolyDataNormals *normals;
   normals = vtkPolyDataNormals::New();
-  normals->SetInputData(smoother->GetOutput());
+  normals->SetInput(smoother->GetOutput());
 
    
   // Create triangle strips
   vtkStripper *stripper;
   stripper = vtkStripper::New();
-  stripper->SetInputData(smoother->GetOutput());
+  stripper->SetInput(smoother->GetOutput());
 
 
 
   //  map to graphics library
   vtkPolyDataMapper *level_set_mapper=vtkPolyDataMapper::New();
-  level_set_mapper->SetInputData(stripper->GetOutput());
+  level_set_mapper->SetInput(stripper->GetOutput());
 
 
   // actor coordinates geometry, properties, transformation

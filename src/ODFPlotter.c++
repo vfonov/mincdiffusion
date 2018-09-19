@@ -486,17 +486,17 @@ vtkActor *ODFPlotter::CreateActor()
 
   if (m_smooth_shapes)
     {
-      smoother->SetInputData(polydata);
+      smoother->SetInput(polydata);
       smoother->SetNumberOfIterations(m_smoother_iterations);
-      normals->SetInputData(smoother->GetOutput());
-      stripper->SetInputData(normals->GetOutput());
+      normals->SetInput(smoother->GetOutput());
+      stripper->SetInput(normals->GetOutput());
 
 
-      ODFMapper->SetInputData(stripper->GetOutput());
+      ODFMapper->SetInput(stripper->GetOutput());
     }
   else 
     {
-      ODFMapper->SetInputData(polydata);
+      ODFMapper->SetInput(polydata);
     }
   
   
